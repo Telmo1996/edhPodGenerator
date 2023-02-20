@@ -3,7 +3,7 @@ import random
 import math
 
 
-NUMPLAYERS = 14
+NUMPLAYERS = 11
 NUMROUNDS = 4
 
 MAXTRIES = 100000
@@ -85,9 +85,9 @@ def checkPods(pods, l):
 			
 		if max(counter3pods) >= 2:
 			return False
-		else:
-			print("El jugador con menos pods de tres participa en " + str(minimum) + " pods de tres.")
-			print("Y el jugador con mas pods de tres participa en " + str(maximum) + " pods de tres." )
+		#else:
+		#	print("El jugador con menos pods de tres participa en " + str(minimum) + " pods de tres.")
+		#	print("Y el jugador con mas pods de tres participa en " + str(maximum) + " pods de tres." )
 
 	return True
 
@@ -112,15 +112,20 @@ if __name__ == "__main__":
 			print("Maximum number of tries reached. Exiting.")
 			exit()
 	
+	print("Número de jugadores: " + str(NUMPLAYERS))
 	podsPerRound = math.ceil(NUMPLAYERS/4)
 	numPods = 0
 	for i in range(0, NUMROUNDS):
+		print()
 		print("Ronda " + str(i+1) +":")
 		r = []
 		for j in range(0, podsPerRound):
 			r.append(pods[i*podsPerRound + j])
 		for j in range(0, len(r)):
-			print("\t" + str(r[len(r)-j-1]))
+			print("   - ", end='')
+			for p in r[len(r)-j-1]:
+				print(str(p) + ' '*(4-len(str(p))), end='')
+			print()
 			
 
 
