@@ -3,7 +3,7 @@ import random
 import math
 
 
-NUMPLAYERS = 11
+NUMPLAYERS = int(sys.argv[1])
 NUMROUNDS = 4
 
 MAXTRIES = 100000
@@ -128,7 +128,8 @@ if __name__ == "__main__":
 			print()
 			
 
-
+	print()
+	print()
 	#print(str(numtries)+ " tries.")
 	#print(pods)
 
