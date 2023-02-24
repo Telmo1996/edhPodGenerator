@@ -108,6 +108,8 @@ if __name__ == "__main__":
 		pods = generatePods(l)
 		validPods = checkPods(pods, l)
 		numtries+=1
+		#if numtries % 10000 == 0:
+		#	print(str(numtries) + " tries so far.")
 		if numtries > MAXTRIES:
 			print("Maximum number of tries reached. Exiting.")
 			exit()
