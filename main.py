@@ -5,43 +5,58 @@ import math
 
 NUMPLAYERS = int(sys.argv[1])
 NUMROUNDS = 4
+if len(sys.argv) > 2:
+	NUMROUNDS = int(sys.argv[2])
 
 MAXTRIES = 100000
 
 
-def addPods(pods, l):
-	i=0
-	pod = []
-	if len(l)%4 == 0:
-		num3pods = 0
-	else:
-		num3pods = 4-len(l)%4
-
-	for p in l:
-		i+=1
-		pod.append(p)
-		#Si ya se llenaron los pods de 3 jugadores
-		if num3pods <= 0:
-			if i == 4:
-				pods.append(set(pod))
-				pod = []
-				i = 0
-		else:
-			if i == 3:
-				pods.append(set(pod))
-				pod = []
-				i = 0
-				num3pods -= 1
-	return pods
-
-
 def generatePods(l):
 	pods = []
+	counter3Pods = [0]*NUMPLAYERS
 
-	r = l.copy()
+	lCopy = l.copy()
 	for i in range(0, NUMROUNDS):
-		random.shuffle(r)
-		pods = addPods(pods, r)
+		random.shuffle(lCopy)
+
+		if i == NUMROUNDS - 1: #Colocar delante a los que tienen menos rondas de 3 en la última ronda
+			r=[]
+			min3Pods = min(counter3Pods)
+			for p in lCopy:
+				if counter3Pods[p-1] == min3Pods:
+					r.append(p)
+			for p in lCopy:
+				if counter3Pods[p-1] != min3Pods:
+					r.append(p)
+		else:
+			r = lCopy.copy()
+
+		playersInPod=0
+		pod = []
+		#Calcular cuantos pods de 3 hay que rellenar
+		if len(l)%4 == 0:
+			num3pods = 0
+		else:
+			num3pods = 4-len(r)%4
+
+		for p in r:
+			playersInPod+=1
+			pod.append(p)
+			#Si ya se llenaron los pods de 3 jugadores
+			if num3pods == 0:
+				if playersInPod == 4:
+					pods.append(set(pod))
+					pod = []
+					playersInPod = 0
+			else:
+				#Si se metió en un pod de 3 se anota
+				counter3Pods[p-1] += 1
+
+				if playersInPod == 3:
+					pods.append(set(pod))
+					pod = []
+					playersInPod = 0
+					num3pods -= 1
 		
 	return pods
 
@@ -101,7 +116,6 @@ if __name__ == "__main__":
 		i += 1
 		l.append(i)
 
-
 	numtries=0
 	validPods = False
 	while not validPods:
@@ -114,6 +128,7 @@ if __name__ == "__main__":
 			print("Maximum number of tries reached. Exiting.")
 			exit()
 	
+	#Imprimir resultado
 	print("Número de jugadores: " + str(NUMPLAYERS))
 	podsPerRound = math.ceil(NUMPLAYERS/4)
 	numPods = 0
