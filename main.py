@@ -107,6 +107,20 @@ def checkPods(pods, l):
 	return True
 
 
+#Randomiza el orden de cada jugador en su mesa
+#Devuelve una lista de listas
+def randomizeSeatOrder(pods):
+	l = []
+	for mesa in pods:
+		m = []
+		for p in mesa:
+			m.append(p)
+		random.shuffle(m)
+		l.append(m)
+
+	return l
+		
+
 if __name__ == "__main__":
 	l=[]
 
@@ -128,6 +142,8 @@ if __name__ == "__main__":
 			print("Maximum number of tries reached. Exiting.")
 			exit()
 	
+	pods = randomizeSeatOrder(pods)
+
 	#Imprimir resultado
 	print("Número de jugadores: " + str(NUMPLAYERS))
 	podsPerRound = math.ceil(NUMPLAYERS/4)
